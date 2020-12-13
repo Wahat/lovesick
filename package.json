@@ -1,0 +1,48 @@
+{
+  "name": "lovesick",
+  "version": "1.0.0",
+  "description": "lovesick",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron index.js",
+    "package": "",
+    "build": "electron-packager . lovesick --overwrite --icon=assets/icons/icon.ico --out=dist/mac"
+  },
+  "dependencies": {
+    "discord-rich-presence": "0.0.8",
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "build": {
+    "appId": "xdxdxd",
+    "category": "blink",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    }
+  },
+  "devDependencies": {
+    "asar": "^3.0.3",
+    "electron": "^8.5.5",
+    "electron-packager": "^15.2.0"
+  }
+}

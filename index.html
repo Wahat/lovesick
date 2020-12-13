@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lovesick</title>
+    <style>
+        .header-container {
+            position: fixed;
+            background-color: #23272A;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            height: 20px;
+            -webkit-app-region: drag;
+        }
+
+        .right-window {
+            -webkit-app-region: no-drag;
+            display: flex;
+            flex-direction: row;
+            right:0;
+        }
+
+        #min,
+        #max,
+        #x {
+            background-color: #23272A;
+            height: 20px;
+            width: 20px;
+        }
+
+        #min:hover,
+        #max:hover {
+            background-color: #3F3F3F;
+            cursor: pointer;
+        }
+
+        #x:hover {
+            background-color: red;
+            cursor: pointer;
+        }
+
+        input[type=text],
+        select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            background-color: #40444b;
+            color: white;
+        }
+
+        input[type=submit] {
+            width: 100%;
+            background-color: #34363c;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.25em;
+            transition: background-color 0.2s;
+        }
+
+        input[type=submit]:hover {
+            background-color: #393c42;
+        }
+
+        body {
+            font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            background-color: #edb2c4;
+            color: white;
+            height: 100%;
+            width: 100%;
+        }
+
+        .main {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 100%;
+            height: calc(100vh - 40px);
+        }
+
+        .form {
+            width: 50%;
+            display: flex;
+            align-items: center;
+        }
+
+        #title-container {
+            background-color: #393c42;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            padding: 0 10px;
+            height: 75%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header-container">
+            <div class="right-window">
+                <div class="window-item" id="min">
+                    -
+                </div>
+                <div class="window-item" id="max">
+                    +
+                </div>
+                <div class="window-item" id="x">
+                    x
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="form">
+            <form>
+                <label>App Id</label>
+                <input type="text" id="id" name="id" value="786852028763865128">
+                <label>Icon Name</label>
+                <input type="text" id="icon" name="icon" value="5lqta8a0kv831">
+                <label>Game</label>
+                <input type="text" id="game" name="game" value="look at you!">
+                <br />
+                <label>Description</label>
+                <input type="text" id="desc" name="desc" value="now look at me!">
+                <br />
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const electron = require('electron');
+        const { ipcRenderer, ipcMain } = electron;
+
+        const x = document.getElementById("x");
+        const max = document.getElementById("max");
+        const min = document.getElementById("min");
+
+        x.addEventListener('click', sendX);
+        max.addEventListener('click', sendMax);
+        min.addEventListener('click', sendMin);
+
+        function sendX(e) {
+            ipcRenderer.send('x');
+        }
+
+        function sendMax(e) {
+            ipcRenderer.send('max');
+        }
+
+        function sendMin(e) {
+            ipcRenderer.send('min');
+        }
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+            const id = document.querySelector('#id').value;
+            const icon = document.querySelector('#icon').value;
+            const game = document.querySelector('#game').value;
+            const desc = document.querySelector('#desc').value;
+            ipcRenderer.send('id:value', id);
+            ipcRenderer.send('icon:value', icon);
+            ipcRenderer.send('game:value', game);
+            ipcRenderer.send('desc:value', desc);
+        }
+    </script>
+</body>
+
+</html>
